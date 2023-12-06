@@ -1,5 +1,6 @@
 import { useState } from "react"
 import MovieList from "./components/MovieList"
+
 const App = () => {
   const [movies, setMovies] = useState([])
   const [isLoading, setIsLoading] = useState(false)
@@ -38,7 +39,16 @@ const App = () => {
   return (
     <div className='bg-slate-500 min-h-screen'>
       <div className='flex flex-col items.center pt-10'>
-        <button onClick={fetchMoviesHandler}>Fetch Movies</button>
+        <button onClick={fetchMoviesHandler}
+          className=""
+        >
+          <span className="">
+            {!isLoading &&}
+            {!isLoading &&}
+            {!isLoading &&}
+            {isLoading &&}
+
+        </span>Fetch Movies</button>
       </div>
       <section>
         (!isLoading && movies.length > 0 && <MovieList movies={movies} />)
