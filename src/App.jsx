@@ -1,4 +1,5 @@
 import { useState } from "react"
+import MovieList from "./components/MovieList"
 const App = () => {
   const [movies, setMovies] = useState([])
   const [isLoading, setIsLoading] = useState(false)
@@ -37,10 +38,13 @@ const App = () => {
   return (
     <div>
       <div>
-        <button>Fetch Movies</button>
+        <button onClick={fetchMoviesHandler}>Fetch Movies</button>
       </div>
       <section>
-        {/* (!isLoading && movies.length) */}
+        (!isLoading && movies.length > 0 && <MovieList movies={movies} />)
+        {!isLoading && movies.length === 0 && !error && (
+          <p>Currently No Movies</p>
+        )}
       </section>
     </div>
   )
