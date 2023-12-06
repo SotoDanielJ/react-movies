@@ -1,66 +1,64 @@
-import { useState } from "react"
-import MovieList from "./components/MovieList"
+import { useState, useEffect } from "react";
+import MovieList from "./components/MovieList";
 
 const App = () => {
-  const [movies, setMovies] = useState([])
-  const [isLoading, setIsLoading] = useState(false)
-  const [error, setError] = useState(null)
+  const [movies, setMovies] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    fetchMoviesHandler();
+  }, []);
 
   const fetchMoviesHandler = async () => {
-    // Fetch movies from API and display them in the UI
-    setIsLoading(true)
-    setMovies{[]}
-    setError(null)
+    setIsLoading(true);
+    setError(null);
 
     try {
-      const response = await fetch('https://swapi.dev/api/films')
+      const response = await fetch("https://swapi.dev/api/films");
 
       if (!response.ok) {
-        throw new Error('Something went wrong!')
+        throw new Error("Something went wrong!");
       }
-      const data = await response.json()
+      const data = await response.json();
 
       const transformedData = data.results.map((movieData) => {
         return {
           id: movieData.episode_id,
           title: movieData.title,
           openingText: movieData.opening_crawl,
-          director: movieData.director,
-          producer: movieData.producer,
-          releaseDate: movieData.release_date
-        }
-      })
-      setMovies(transformedData)
+          releaseDate: movieData.release_date,
+        };
+      });
+      setMovies(transformedData);
     } catch (error) {
-      setError(error.message)
+      setError(error.message);
     }
-    setIsLoading(false)
-  }
-  
-  return (
-    <div className='bg-slate-500 min-h-screen'>
-      <div className='flex flex-col items.center pt-10'>
-        <button onClick={fetchMoviesHandler}
-          className=""
-        >
-          <span className="">
-            {!isLoading &&}
-            {!isLoading &&}
-            {!isLoading &&}
-            {isLoading &&}
+    setIsLoading(false);
+  };
 
-        </span>Fetch Movies</button>
+  return (
+    <div className="flex flex-col items-center text-center bg-slate-500 min-h-screen">
+      <div className="items-center pt-10">
+        <button
+          onClick={fetchMoviesHandler}
+          className="relative inline-flex items-center justify-center p-0.5 mb-2 mr-2 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-green-400 to-blue-600 group-hover:from-green-400 group-hover:to-blue-600 hover:text-white dark:text-white focus:ring-4 focus:outline-none focus:ring-green-200 dark:focus:ring-green-800"
+        >
+          <span className="relative px-5 py-2.5 transition-all ease-in duration-75 bg-white dark:bg-gray-900 rounded-md group-hover:bg-opacity-0">
+            Fetch Movies
+          </span>
+        </button>
       </div>
-      <section>
-        (!isLoading && movies.length > 0 && <MovieList movies={movies} />)
+      <section className="bg-slate-300 w-[40rem] text-center pt-2 mt-5 round-lg">
+        {!isLoading && movies.length > 0 && <MovieList movies={movies} />}
         {!isLoading && movies.length === 0 && !error && (
-          <p>Currently No Movies</p>
+          <p className="text-2xl font-semibold">Currently No Movies</p>
         )}
-        {!isLoading && error && <p>{error}</p>}
-        {isLoading && <p>Loading...</p>}
+        {!isLoading && error && <p className="text-pink-500">{error}</p>}
+        {isLoading && <p className="text-2xl font-semibold">Loading...</p>}
       </section>
     </div>
-  )
-}
+  );
+};
 
-export default App
+export default App;
