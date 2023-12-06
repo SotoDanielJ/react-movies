@@ -27,6 +27,7 @@ const App = () => {
           releaseDate: movieData.release_date
         }
       })
+      setMovies(transformedData)
     } catch (error) {
       setError(error.message)
     }
@@ -38,7 +39,9 @@ const App = () => {
       <div>
         <button>Fetch Movies</button>
       </div>
-      <section>Content</section>
+      <section>
+        {/* (!isLoading && movies.length) */}
+      </section>
     </div>
   )
 }
