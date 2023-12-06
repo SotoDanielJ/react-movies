@@ -36,8 +36,8 @@ const App = () => {
   }
   
   return (
-    <div>
-      <div>
+    <div className='bg-slate-500 min-h-screen'>
+      <div className='flex flex-col items.center pt-10'>
         <button onClick={fetchMoviesHandler}>Fetch Movies</button>
       </div>
       <section>
@@ -45,6 +45,8 @@ const App = () => {
         {!isLoading && movies.length === 0 && !error && (
           <p>Currently No Movies</p>
         )}
+        {!isLoading && error && <p>{error}</p>}
+        {isLoading && <p>Loading...</p>}
       </section>
     </div>
   )
