@@ -9,6 +9,7 @@ const App = () => {
   const fetchMoviesHandler = async () => {
     // Fetch movies from API and display them in the UI
     setIsLoading(true)
+    setMovies{[]}
     setError(null)
 
     try {
