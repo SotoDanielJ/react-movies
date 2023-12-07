@@ -1,23 +1,24 @@
 import { useState, useEffect } from "react";
-import { useStatePeople, useEffectPeople } from "react";
 import MovieList from "./components/MovieList";
+import PeopleList from "./components/PeopleList";
+import MusicPlayer from "./components/MusicPlayer";
 
 const App = () => {
   const [movies, setMovies] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  const [peoples, setPeoples] = useStatePeople([])
-  // Get movies when the component mounts
+  const [peoples, setPeoples] = useState([])
 
   useEffect(() => {
     fetchMoviesHandler();
   }, []);
-  useEffectPeople(() => {
+  
+  useEffect(() => {
     fetchPeoplesHandler();
-  }, []);
-
-  const fetchMoviesHandler = async () => {
+  },[]);
+    
+  const fetchMoviesHandler = async () => { 
     setIsLoading(true);
     setError(null);
 
@@ -33,8 +34,8 @@ const App = () => {
         return {
           id: movieData.episode_id,
           title: movieData.title,
-          openingText: movieData.opening_crawl,
           releaseDate: movieData.release_date,
+          openingText: movieData.opening_crawl,
         };
       });
       setMovies(transformedData);
@@ -61,9 +62,10 @@ const App = () => {
       
       const transformedData = data.results.map((peopleData) => {
         return {
-          id: peopleData.name,
-          birthYear: peopleData.birthYear,
-          homeworld: peopleData.homeworld,
+          id: peopleData.url,
+          name: peopleData.name,
+          birthYear: peopleData.birth_year,
+          gender: peopleData.gender,
         };
       });
       setPeoples(transformedData);
@@ -74,26 +76,30 @@ const App = () => {
   };
   
   return (
-    <div className="flex flex-col items-center text-center bg-slate-500 min-h-screen">
-      <div className="items-center pt-10">
+    <div className="flex flex-col items-center text-center bg-fixed bg-[url('/public/marc-schulte-galaxy-unsplash.jpg')] bg-contain bg-center">
+      <div className="flow-root flex-row w-full justify-center text-center items-center fixed pt-4 pb-4 bg-fixed bg-[url('/public/marc-schulte-galaxy-unsplash.jpg')] bg-contain bg-center space-x-2">
         <button
           onClick={fetchMoviesHandler}
-          className="relative inline-flex items-center justify-center p-0.5 mb-2 mr-2 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-green-400 to-blue-600 group-hover:from-green-400 group-hover:to-blue-600 hover:text-white dark:text-white focus:ring-4 focus:outline-none focus:ring-green-200 dark:focus:ring-green-800"
+          className="relative inline-flex items-center justify-center p-0.5  overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-green-400 to-blue-600 group-hover:from-green-400 group-hover:to-blue-600 hover:text-white dark:text-white focus:ring-4 focus:outline-none focus:ring-green-200 dark:focus:ring-green-800"
         >
           <span className="relative px-5 py-2.5 transition-all ease-in duration-75 bg-white dark:bg-gray-900 rounded-md group-hover:bg-opacity-0">
             Fetch Movies
           </span>
         </button>
         <button
+          onClick={MusicPlayer}
+          className="relative inline-flex items-center justify-center p-0.5   overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-green-400 to-blue-600 group-hover:from-green-400 group-hover:to-blue-600 hover:text-white dark:text-white focus:ring-4 focus:outline-none focus:ring-green-200 dark:focus:ring-green-800 basis-"
+        >Click Me</button>
+        <button
           onClick={fetchPeoplesHandler}
-          className="relative inline-flex items-center justify-center p-0.5 mb-2 mr-2 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-green-400 to-blue-600 group-hover:from-green-400 group-hover:to-blue-600 hover:text-white dark:text-white focus:ring-4 focus:outline-none focus:ring-green-200 dark:focus:ring-green-800"
+          className="relative inline-flex items-center justify-center p-0.5   overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-green-400 to-blue-600 group-hover:from-green-400 group-hover:to-blue-600 hover:text-white dark:text-white focus:ring-4 focus:outline-none focus:ring-green-200 dark:focus:ring-green-800 basis-"
         >
           <span className="relative px-5 py-2.5 transition-all ease-in duration-75 bg-white dark:bg-gray-900 rounded-md group-hover:bg-opacity-0">
             Fetch Characters
           </span>
         </button>
       </div>
-      <section className="bg-slate-300 w-[40rem] text-center pt-2 mt-5 round-lg">
+      <section className="flex flex-row text-center text pt-10 round-lg">
         {!isLoading && movies.length > 0 && <MovieList movies={movies} />}
         {!isLoading && peoples.length > 0 && <PeopleList peoples={peoples} />}
         {!isLoading && movies.length === 0 && !error && (
@@ -103,10 +109,16 @@ const App = () => {
           <p className="text-2xl font-semibold">Currently No Characters</p>
         )}
         {!isLoading && error && <p className="text-pink-500">{error}</p>}
-        {isLoading && <p className="text-2xl font-semibold">Loading...</p>}
+        {isLoading && (
+          <p className="text-2xl text-blue-500 font-semibold pt-10 pb-10">
+            Loading...
+          </p>
+        )}
       </section>
     </div>
   );
 }
 
 export default App
+
+

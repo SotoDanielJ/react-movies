@@ -1,10 +1,11 @@
-const People = (props) => {
+const People = (peeps) => {
   return (
-    <li className="p-8 m-8 bg-indigo-600 rounded-lg shadow-lg">
-      <h2 className="font-bold text-3xl text-yellow-300">{props.birthYear}</h2>
-      <h3 className="font-semibold text-2xl text-yellow-200">
-        {props.homeworld}
+    <li className="p-8 m-8 bg-black/50 rounded-lg shadow-lg col">
+      <h2 className="font-bold text-3xl text-blue-400">{peeps.name}</h2>
+      <h3 className="font-semibold text-2xl text-blue-900">
+        {peeps.birthYear}
       </h3>
+      <p className="text-blue-200">{peeps.gender}</p>
     </li>
   );
 };

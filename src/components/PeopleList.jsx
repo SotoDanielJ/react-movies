@@ -1,13 +1,14 @@
 import People from './People'
 
-const PeopleList = (props) => {
+const PeopleList = (peeps) => {
     return (
         <ul>
-            {props.peoples.map((people) => (
+            {peeps.peoples.map((people) => (
                 <People
-                    key={people.name}
+                    key={people.url}
+                    name={people.name}
                     birthYear={people.birthYear}
-                    homeworld={people.homeworld}
+                    gender={people.gender}
                 />
             ))}
         </ul>
