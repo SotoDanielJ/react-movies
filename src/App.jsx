@@ -1,24 +1,53 @@
 import { useState, useEffect } from "react";
 import MovieList from "./components/MovieList";
 import PeopleList from "./components/PeopleList";
-import MusicPlayer from "./components/MusicPlayer";
+import soundfile from "/Users/maceo/react-movies/public/star-wars-cantina-song.mp3";
 
 const App = () => {
   const [movies, setMovies] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  const [peoples, setPeoples] = useState([])
+  const [peoples, setPeoples] = useState([]);
+
+  const [isPlaying, setIsPlaying] = useState(false);
+
+  useEffect(() => {
+    MusicPlayer();
+  });
+  const MusicPlayer = async () => {
+    function togglePlayPause() {
+      const audio = soundfile.getElementById("audio");
+      if (isPlaying) {
+        audio.pause();
+      } else {
+        audio.play();
+      }
+      setIsPlaying(!isPlaying);
+    }
+    try {
+      return (
+        <div className="bg-gray-100 p-4 rounded">
+          <audio id="audio" src="public/star-wars-cantina-song.mp3" />
+          <button onClick={togglePlayPause}>
+            {isPlaying ? "Pause" : "Play"}
+          </button>
+        </div>
+      );
+    } catch (error) {
+      setError(error.message);
+    }
+  };
 
   useEffect(() => {
     fetchMoviesHandler();
   }, []);
-  
+
   useEffect(() => {
     fetchPeoplesHandler();
-  },[]);
-    
-  const fetchMoviesHandler = async () => { 
+  }, []);
+
+  const fetchMoviesHandler = async () => {
     setIsLoading(true);
     setError(null);
 
@@ -45,21 +74,18 @@ const App = () => {
     setIsLoading(false);
   };
 
-  
   const fetchPeoplesHandler = async () => {
     setIsLoading(true);
     setError(null);
-    
+
     try {
-      const response = await fetch(
-        "https://swapi.dev/api/people"
-      )
-      
+      const response = await fetch("https://swapi.dev/api/people");
+
       if (!response.ok) {
         throw new Error("Something went wrong!");
       }
       const data = await response.json();
-      
+
       const transformedData = data.results.map((peopleData) => {
         return {
           id: peopleData.url,
@@ -74,7 +100,7 @@ const App = () => {
     }
     setIsLoading(false);
   };
-  
+
   return (
     <div className="flex flex-col items-center text-center bg-fixed bg-[url('/public/marc-schulte-galaxy-unsplash.jpg')] bg-contain bg-center">
       <div className="flow-root flex-row w-full justify-center text-center items-center fixed pt-4 pb-4 bg-fixed bg-[url('/public/marc-schulte-galaxy-unsplash.jpg')] bg-contain bg-center space-x-2">
@@ -87,9 +113,11 @@ const App = () => {
           </span>
         </button>
         <button
-          onClick={MusicPlayer}
+          onClick={MusicPlayer()}
           className="relative inline-flex items-center justify-center p-0.5   overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-green-400 to-blue-600 group-hover:from-green-400 group-hover:to-blue-600 hover:text-white dark:text-white focus:ring-4 focus:outline-none focus:ring-green-200 dark:focus:ring-green-800 basis-"
-        >Click Me</button>
+        >
+          Click Me
+        </button>
         <button
           onClick={fetchPeoplesHandler}
           className="relative inline-flex items-center justify-center p-0.5   overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-green-400 to-blue-600 group-hover:from-green-400 group-hover:to-blue-600 hover:text-white dark:text-white focus:ring-4 focus:outline-none focus:ring-green-200 dark:focus:ring-green-800 basis-"
@@ -117,8 +145,6 @@ const App = () => {
       </section>
     </div>
   );
-}
+};
 
-export default App
-
-
+export default App;
